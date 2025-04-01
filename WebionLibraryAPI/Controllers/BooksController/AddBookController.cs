@@ -19,10 +19,7 @@ namespace WebionLibraryAPI.Controllers.BooksController;
         public async Task<IActionResult> AddBook(AddBookRequestDto request)
         {
             var book = await _bookService.AddBookAsync(request);
-
-            //TODO: Da ricontrollare la CreatedAction. Rilascia un 500 internal server error per un routing sbagliato, ma comunque crea il libro.
-            // Restituisce una risposta 201 Created con l'URL del libro appena creato
-            return CreatedAtAction(nameof(GetAllBooksController.GetAllBooks), new { id = book.Id }, book);
+            return Ok(book);
         }
     }
 

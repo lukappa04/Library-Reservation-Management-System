@@ -65,12 +65,19 @@ public class BookService : IBookService
         BookM updateBook = await _bookRepository.GetBookByIdAsync(id);
         if(updateBook is null) throw new KeyNotFoundException("Libro non trovato");
         
-        updateBook.Title = request.Title ?? updateBook.Title;
-        updateBook.Author = request.Author ?? updateBook.Author;
-        updateBook.ISBN = request.ISBN ?? updateBook.ISBN;
-        updateBook.Status = request.Status;
+        if (!string.IsNullOrEmpty(request.Title)) 
+        updateBook.Title = request.Title;
 
-        await _bookRepository.UpdateBookAsync(updateBook);
+        if (!string.IsNullOrEmpty(request.Author)) 
+            updateBook.Author = request.Author;
+
+        if (!string.IsNullOrEmpty(request.ISBN)) 
+            updateBook.ISBN = request.ISBN;
+
+        if (request.Status != updateBook.Status)  // Status potrebbe essere nullable (int?, bool?)
+            updateBook.Status = request.Status;
+
+        await _bookRepository.UpdateBookAsync(id, updateBook);
         return new BookResponseDto(updateBook);
     }
 }
