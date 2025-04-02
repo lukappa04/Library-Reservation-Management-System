@@ -3,11 +3,22 @@ using System.Text.RegularExpressions;
 using WebionLibraryAPI.Models.Books;
 
 namespace WebionLibraryAPI.DataChecker.BookDataChecker;
-
+/// <summary>
+/// Classe dedicata al controllo della struttura el ISBN dei libri. 
+/// </summary>
 public class ISBNDataChecker : ValidationAttribute
 {
+    /// <summary>
+    /// Le due constanti definiscono la struttura predefinita che l'ISBN deve avere
+    /// </summary>
     private const string _isbnPattern13 = @"^(?:\d{9}[\dXx]|\d{3}-\d+-\d+-\d+-\d+|\d{13})$";
     private const string _isbnPattern10 = @"^(?:\d{9}[\dXx]|\d+-\d+-\d+-[\dXx])$";
+    /// <summary>
+    /// Questo è il metodo per la creazione del attributo, dove viene effettuata la verifica
+    /// </summary>
+    /// <param name="value">valore da controllare</param>
+    /// <param name="validationContext"></param>
+    /// <returns>Success se i controlli vengono passati, se lancia un errore in caso contrario</returns>
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if (value is string isbn)
