@@ -1,0 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
+using WebionLibraryAPI.Models.Books;
+
+namespace WebionLibraryAPI.DataChecker.BookDataChecker;
+
+public class ISBNDataChecker : ValidationAttribute
+{
+    private const string _isbnPattern13 = @"^(?:\d{9}[\dXx]|\d{3}-\d+-\d+-\d+-\d+|\d{13})$";
+    private const string _isbnPattern10 = @"^(?:\d{9}[\dXx]|\d+-\d+-\d+-[\dXx])$";
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value is string isbn)
+            {
+                if (!Regex.IsMatch(isbn, _isbnPattern13) && !Regex.IsMatch(isbn, _isbnPattern10))
+                {
+                    return new ValidationResult("L'ISBN deve essere lungo 10 o 13 caratteri.");
+                }
+            }
+            return ValidationResult.Success;
+        }
+}
