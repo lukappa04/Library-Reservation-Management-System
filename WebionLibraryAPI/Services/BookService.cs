@@ -13,13 +13,15 @@ namespace WebionLibraryAPI.Service;
 public class BookService : IBookService
 {
     private readonly IBookRepository _bookRepository;
-    public BookService(IBookRepository bookRepository)
+    public BookService(IBookRepository BookRepository)
     {
-        _bookRepository = bookRepository;
+        _bookRepository = BookRepository;
     }
 
     public async Task<BookResponseDto> AddBookAsync(AddBookRequestDto request)
     {
+        
+       
         BookM newBook = new BookM
         {
             Title = request.Title,
@@ -27,6 +29,10 @@ public class BookService : IBookService
             ISBN = request.ISBN,
             Status = request.Status
         };
+        if(await _bookRepository.IsIsbnExistsAsync(request.ISBN))
+        {
+            throw new Exception("ISBN già esistente");
+        }
 
         await _bookRepository.AddBookAsync(newBook);
         return new BookResponseDto(newBook);
@@ -71,8 +77,8 @@ public class BookService : IBookService
         if (!string.IsNullOrEmpty(request.Author)) 
             updateBook.Author = request.Author ?? updateBook.Author;
 
-        if (!string.IsNullOrEmpty(request.ISBN)) 
-            updateBook.ISBN = request.ISBN ?? updateBook.ISBN;
+        //if (!string.IsNullOrEmpty(request.ISBN)) 
+        //    updateBook.ISBN = request.ISBN ?? updateBook.ISBN;
 
         if (request.Status != updateBook.Status) 
             updateBook.Status = request.Status;

@@ -9,6 +9,7 @@ namespace WebionLibraryAPI.Service.Interfaces;
 
 public interface IBookService
 {
+    //TODO: Guardare per estendere un intyerfaccia e non creare duplciati.
     Task<IEnumerable<BookResponseDto>> GetAllBookAsync();
     Task<BookResponseDto?> GetBookByIdAsync(GetBookByIdRequestDto request);
     Task<BookResponseDto?> GetBookByTitleAsync(GetBookByTitleRequestDto request);
