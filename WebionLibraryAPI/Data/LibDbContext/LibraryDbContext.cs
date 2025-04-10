@@ -15,7 +15,7 @@ public class LibraryDbContext : DbContext
     public DbSet<ReservationM> Reservations { get; set; }
 
     //configuro i miei campi del db
-    protected void OodelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
@@ -23,6 +23,10 @@ public class LibraryDbContext : DbContext
         modelBuilder.Entity<CustomerM>()
         .HasIndex(c => c.Email)
         .IsUnique(); //impostiamo il campo email come unique
+        
+        modelBuilder.Entity<CustomerM>()
+        .Property(c => c.RegistrationDate)
+        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
         //BookM
         modelBuilder.Entity<BookM>()

@@ -11,6 +11,7 @@ namespace WebionLibraryAPI.Controllers.BooksController;
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Tags("Books")]
     public class DeleteBookController : ControllerBase
     {
         private readonly IBookService _bookService;

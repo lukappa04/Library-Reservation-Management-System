@@ -7,6 +7,7 @@ namespace WebionLibraryAPI.Controllers.BooksController;
 
     [Route("api/[controller]")]
     [ApiController]
+    [Tags("Books")]
     public class GetAllBooksController : ControllerBase
     {
         private readonly IBookService _bookService;

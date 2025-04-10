@@ -12,6 +12,7 @@ namespace WebionLibraryAPI.Controllers.BooksController;
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Tags("Books")]
     public class UpdateBookController : ControllerBase
     {
         private readonly IBookService _bookService;

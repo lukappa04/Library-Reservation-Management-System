@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using WebionLibraryAPI;
 using WebionLibraryAPI.Data.LibDbContext;
 using WebionLibraryAPI.Data.Repository;
 using WebionLibraryAPI.Data.Repository.Interfaces.BookRepoInterface;
+using WebionLibraryAPI.Data.Repository.Interfaces.CustomerRepoInterface;
 using WebionLibraryAPI.Service;
 using WebionLibraryAPI.Service.Interfaces;
 
@@ -19,17 +21,21 @@ builder.Services.AddSwaggerGen(c =>
         Title = "WebionLibraryAPI",
         Version = "v1"
     });
+    c.DocumentFilter<SwaggerTagDescriptions>();
 });
 
 // Add services to the container.
-builder.Services.AddDbContext<LibraryDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionStrings")));
+builder.Services.AddDbContext<LibraryDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
+
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
