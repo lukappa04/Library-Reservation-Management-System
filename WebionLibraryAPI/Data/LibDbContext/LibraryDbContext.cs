@@ -41,6 +41,11 @@ public class LibraryDbContext : DbContext
         .OnDelete(DeleteBehavior.Cascade); //quando un cliente viene eliminato anche le sue prenotazioni si eliminano
 
         modelBuilder.Entity<ReservationM>()
+        .Property(r => r.ReservationDate)
+        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+
+        modelBuilder.Entity<ReservationM>()
         .HasOne(r => r.Book) //ogni prenotazione ha un libro
         .WithMany() 
         .HasForeignKey(r => r.BookId) //FK di BookId in ReservationId
