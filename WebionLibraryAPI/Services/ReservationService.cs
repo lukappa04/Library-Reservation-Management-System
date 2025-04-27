@@ -66,7 +66,7 @@ public class ReservationService : IReservationService
 
     public async Task<bool> DeleteReservation(DeleteReservationRequestDto request)
     {
-        ReservationM? reservation = await _reservationRepository.GetReservationById(request.ReservationId);
+        ReservationM? reservation = await _reservationRepository.GetReservationById(request.BookId);
 
         var book = await _bookRepository.GetBookByIdAsync(reservation.BookId);
 

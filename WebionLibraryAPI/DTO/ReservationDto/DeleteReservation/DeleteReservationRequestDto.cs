@@ -2,5 +2,5 @@ namespace WebionLibraryAPI.DTO.ReservationDto.DeleteReservation;
 
 public sealed class DeleteReservationRequestDto
 {
-    public int ReservationId { get; set; }
+    public int BookId { get; set; }
 }
