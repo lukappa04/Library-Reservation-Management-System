@@ -18,7 +18,7 @@ namespace WebionLibraryAPI.Controllers.ReservationController;
         [HttpDelete]
         public async Task<IActionResult> DeleteReservation(int id)
         {
-            var request = new DeleteReservationRequestDto {ReservationId = id};
+            var request = new DeleteReservationRequestDto {BookId = id};
             var reservation = await _reservationService.DeleteReservation(request);
             return reservation ? NoContent() : NotFound();
         }
