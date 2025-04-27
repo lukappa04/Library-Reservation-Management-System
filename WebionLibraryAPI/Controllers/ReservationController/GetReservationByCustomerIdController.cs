@@ -17,11 +17,11 @@ namespace WebionLibraryAPI.Controllers.ReservationController;
         {
             _reservationService = reservationService;
         }
-        [HttpGet("{id}")]
+        [HttpGet("by-customer/")]
         public async Task<IActionResult> GetByCustomerId(int Id)
         {
             var request = new GetReservationByCustomerIdRequestDto {CustomerId = Id};
-            var reservation = await _reservationService.GetReservationById(request);
+            var reservation = await _reservationService.GetReservationByCustomerId(request);
             return reservation is not null ? Ok(reservation) : NotFound();
         }
     }

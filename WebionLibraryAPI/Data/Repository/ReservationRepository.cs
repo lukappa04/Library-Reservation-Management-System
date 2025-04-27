@@ -32,10 +32,10 @@ public class ReservationRepository : IReservationRepository
         _cache.Remove(CacheKey);
     }
 
-    public async Task<ReservationM?> GetReservationByCustomerId(int id)
+    public async Task<List<ReservationM?>> GetReservationByCustomerId(int id)
     {
         var reservation = await GetAllReservation();
-        return reservation.FirstOrDefault(cI => cI.CustomerId == id);
+        return reservation.Where(r => r.CustomerId == id).ToList();
     }
 
     public async Task<List<ReservationM>> GetAllReservation()
@@ -47,5 +47,11 @@ public class ReservationRepository : IReservationRepository
         var reservationDb = await _context.Reservations.ToListAsync();
         _cache.Set(CacheKey, reservationDb, TimeSpan.FromMinutes(10));
         return reservationDb;
+    }
+
+    public async Task<ReservationM> GetReservationById(int Id)
+    {
+        var reservation = await GetAllReservation();
+        return reservation.FirstOrDefault(r => r.BookId == Id);
     }
 }
