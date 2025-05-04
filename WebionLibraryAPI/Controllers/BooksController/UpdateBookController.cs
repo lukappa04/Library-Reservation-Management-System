@@ -28,7 +28,6 @@ namespace WebionLibraryAPI.Controllers.BooksController;
         /// <param name="request">il campo che porta tutti i campi da compilare per soddisfare la richiesta</param>
         /// <returns>Ok se il libro viene trovato /  NotFound se il libro non viene trovato</returns>
 
-        //TODO: UpdateBook BUG da sistemare, guardare le issue
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, UpdateBookRequestDto request)
         {
