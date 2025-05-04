@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Add services to the container.
-builder.Services.AddDbContext<LibraryDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<LibraryDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
@@ -46,6 +46,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
+
+    var pendingMigrations = await db.Database.GetPendingMigrationsAsync();
+    if (pendingMigrations.Any())
+    {
+        Console.WriteLine("Applying pending migrations...");
+        await db.Database.MigrateAsync();
+        Console.WriteLine("Migrations applied.");
+    }
+    else
+    {
+        Console.WriteLine("No pending migrations.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
