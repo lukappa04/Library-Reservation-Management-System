@@ -12,10 +12,10 @@ public class ReservationM : IObjects
     public int Id { get; set; }
 
     public int CustomerId { get; set; }
-    public CustomerM Customer { get; set; }
+    public CustomerM? Customer { get; set; }
     
     public int BookId { get; set; }
-    public BookM Book { get; set; }
+    public BookM? Book { get; set; }
 
     public DateTime ReservationDate { get; set; }
     public DateTime ExpirationDate { get; set; }

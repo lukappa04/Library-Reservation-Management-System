@@ -40,7 +40,7 @@ public class ReservationRepository : IReservationRepository
 
     public async Task<List<ReservationM>> GetAllReservation()
     {
-        if(_cache.TryGetValue(CacheKey, out List<ReservationM> reservations))
+        if(_cache.TryGetValue(CacheKey, out List<ReservationM>? reservations))
         {
             return reservations;
         }
@@ -49,7 +49,7 @@ public class ReservationRepository : IReservationRepository
         return reservationDb;
     }
 
-    public async Task<ReservationM> GetReservationById(int Id)
+    public async Task<ReservationM?> GetReservationById(int Id)
     {
         var reservation = await GetAllReservation();
         return reservation.FirstOrDefault(r => r.BookId == Id);

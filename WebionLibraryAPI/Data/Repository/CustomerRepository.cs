@@ -30,7 +30,7 @@ public class CustomerRepository : ICustomerRepository
         _cache.Remove(CacheKey);
     }
 
-    public async Task<List<CustomerM>> GetAllCustomerAsync()
+    public async Task<List<CustomerM>>? GetAllCustomerAsync()
     {
         if(_cache.TryGetValue(CacheKey, out List<CustomerM> customer))
         {
