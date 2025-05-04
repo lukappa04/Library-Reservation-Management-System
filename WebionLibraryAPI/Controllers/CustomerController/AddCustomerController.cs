@@ -18,11 +18,6 @@ namespace WebionLibraryAPI.Controllers.CustomerController;
         [HttpPost]
         public async Task<IActionResult> AddCustomer(AddCustomerRequestDto request)
         {
-            if (request.RegistrationDate.Equals(""))
-            {
-                // Se non viene fornita, assegna manualmente la data corrente
-                request.RegistrationDate = DateTime.UtcNow;
-            }
             var customer = await _customerService.AddCustomerAsync(request);
             Console.WriteLine($"Registration Date: {customer.RegistrationDate}");
 

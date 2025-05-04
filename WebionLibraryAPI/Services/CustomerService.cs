@@ -24,7 +24,7 @@ public class CustomerService : ICustomerService
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
-            RegistrationDate = request.RegistrationDate
+            RegistrationDate = DateTime.UtcNow
         };
         if(await _customerRepository.isEmailExisting(request.Email)) throw new Exception("Email già esistente");
 
@@ -58,9 +58,17 @@ public class CustomerService : ICustomerService
         CustomerM updateCustomer = await _customerRepository.GetCustomerByIdAsync(id);
         if(updateCustomer is null) throw new KeyNotFoundException("Cliente non trovato");
 
+        var allCustomers = await _customerRepository.GetAllCustomerAsync();
+        bool emailExists = allCustomers
+        .Any(c => c.Email == request.Email && c.Id != id);
+
+        if (emailExists) throw new InvalidOperationException("Questa email è già associata a un altro cliente.");
+
         updateCustomer.FirstName = request.FirstName;
         updateCustomer.LastName = request.LastName;
         updateCustomer.Email = request.Email;
+
+        
 
         await _customerRepository.UpdateCustomerAsync(id, updateCustomer);
         return new CustomerResponseDto(updateCustomer);

@@ -12,6 +12,4 @@ public sealed class AddCustomerRequestDto
     [Required]
     [EmailStructChecker]
     public string Email { get; set; } = string.Empty;
-    [Required]
-    public DateTime RegistrationDate { get; set; }
 }

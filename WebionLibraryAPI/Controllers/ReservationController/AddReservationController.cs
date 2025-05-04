@@ -18,10 +18,6 @@ namespace WebionLibraryAPI.Controllers.ReservationController;
         [HttpPost]
         public async Task<IActionResult> AddReservation(CreateReservationRequestDto request)
         {
-            if(request.ReservationDate == default)
-            {
-                request.ReservationDate = DateTime.UtcNow;
-            }
             var reservation = await _reservationService.AddReservation(request);
             Console.WriteLine($"Reservation Date: {reservation.ReservationDate}");
 
