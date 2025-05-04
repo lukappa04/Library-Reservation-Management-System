@@ -2,6 +2,7 @@ using WebionLibraryAPI.Data.Repository.Interfaces.BookRepoInterface;
 using WebionLibraryAPI.DTO.BookDto;
 using WebionLibraryAPI.DTO.BookDto.AddBookDto;
 using WebionLibraryAPI.DTO.BookDto.DeleteBookDto;
+using WebionLibraryAPI.DTO.BookDto.GetBookByAuthor;
 using WebionLibraryAPI.DTO.BookDto.GetBookByIdDto;
 using WebionLibraryAPI.DTO.BookDto.GetBookByTitleDto;
 using WebionLibraryAPI.DTO.BookDto.UpdateBookDto;
@@ -54,16 +55,27 @@ public class BookService : IBookService
         return books.Select(book => new BookResponseDto(book));
     }
 
+    public async Task<List<BookResponseDto?>> GetBookByAuthorAsync(GetBookByAuthorRequestDto request)
+    {
+        var book = await _bookRepository.GetBookByAuthorAsync(request.Author);
+        if(book == null || !book.Any()) return new List<BookResponseDto>();
+
+        return book.Select(b => new BookResponseDto(b)).ToList();
+    }
+
     public async Task<BookResponseDto?> GetBookByIdAsync(GetBookByIdRequestDto request)
     {
         var book = await _bookRepository.GetBookByIdAsync(request.id);
         return book is not null ? new BookResponseDto(book) : null;
     }
 
-    public async Task<BookResponseDto?> GetBookByTitleAsync(GetBookByTitleRequestDto request)
+    public async Task<List<BookResponseDto?>> GetBookByTitleAsync(GetBookByTitleRequestDto request)
     {
         var book = await _bookRepository.GetBookByTitleAsync(request.title);
-        return book is not null ? new BookResponseDto(book) : null;
+
+        if(book == null || !book.Any()) return new List<BookResponseDto>();
+
+        return book.Select(b => new BookResponseDto(b)).ToList();
     }
 
     public async Task<BookResponseDto> UpdateBookAsync(int id, UpdateBookRequestDto request)

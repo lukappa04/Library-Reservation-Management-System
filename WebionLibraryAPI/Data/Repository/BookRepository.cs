@@ -36,7 +36,6 @@ public class BookRepository : IBookRepository
 
     public async Task<List<BookM>> GetAllBooksAsync()
     {
-        //TODO: Controllare come implemntare il lavoro della cache qua su BookRepository e non andare ad espandersi creando altri layer.
         if(_cache.TryGetValue(CacheKey, out List<BookM> books))
         {
             return books;
@@ -54,11 +53,13 @@ public class BookRepository : IBookRepository
         return books.FirstOrDefault(b=> b.Id == id);
     }
 
-    public async Task<BookM?> GetBookByTitleAsync(string Title)
+    public async Task<List<BookM?>> GetBookByTitleAsync(string Title)
     {
         //return await _context.Books.FirstOrDefaultAsync(b => b.Title == Title);
         var books = await GetAllBooksAsync();
-        return books.FirstOrDefault(b => b.Title.Equals(Title, StringComparison.OrdinalIgnoreCase));
+        return books
+        .Where(b => b.Title.Equals(Title, StringComparison.OrdinalIgnoreCase))
+        .ToList();
     }
 
     public async Task UpdateBookAsync(int id, BookM book)
@@ -79,5 +80,13 @@ public class BookRepository : IBookRepository
     {
         var books = await GetAllBooksAsync();
         return books.Any(b => b.ISBN == isbn);
+    }
+
+    public async Task<List<BookM?>> GetBookByAuthorAsync(string Author)
+    {
+        var books = await GetAllBooksAsync();
+        return books
+        .Where(b => b.Author.Equals(Author, StringComparison.OrdinalIgnoreCase))
+        .ToList();
     }
 }
