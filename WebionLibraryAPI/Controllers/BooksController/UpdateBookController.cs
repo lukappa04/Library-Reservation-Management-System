@@ -29,11 +29,10 @@ namespace WebionLibraryAPI.Controllers.BooksController;
         /// <returns>Ok se il libro viene trovato /  NotFound se il libro non viene trovato</returns>
 
         //TODO: UpdateBook BUG da sistemare, guardare le issue
-        [HttpPost]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, UpdateBookRequestDto request)
         {
             try{
-
             var book = await _bookService.UpdateBookAsync(id, request);
             return book is not null ? Ok(book) : NotFound();
             }catch(KeyNotFoundException)

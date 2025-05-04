@@ -16,7 +16,7 @@ namespace WebionLibraryAPI.Controllers.CustomerController;
         {
             _customerService = customerService;
         }
-        [HttpPost]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCustomer(int id, UpdateCustomerRequestDto request)
         {
             var customer = await _customerService.UpdateCustomerAsync(id, request);
