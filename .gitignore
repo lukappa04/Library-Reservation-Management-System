@@ -10,3 +10,5 @@ obj
 .vscode
 
 WebionChallenge.sln
+
+.env

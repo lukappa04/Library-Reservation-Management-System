@@ -1,4 +1,0 @@
-Customer
-1) TODO: Finire di creare le DTO per i customer
-2) TODO: Procedere creando le interfacce Service
-3) TODO: Concludere con i controller

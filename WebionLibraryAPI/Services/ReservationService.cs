@@ -21,6 +21,12 @@ public class ReservationService : IReservationService
         _reservationRepository = reservationRepository;
         _bookRepository = bookRepository;
     }
+    /// <summary>
+    /// Metodo per la creazione di una prenotazione
+    /// </summary>
+    /// <param name="request">dati necessari per effettuare la richiesta: CustomerId, BookId, StartDate, ExpireDate</param>
+    /// <returns>Una DTO response.</returns>
+    /// <exception cref="Exception">Effettua un controllo sullo stato del libro, se disponibile procede, altrimente lancia un eccezione</exception>
     public async Task<ReservationResponse> AddReservation(CreateReservationRequestDto request)
     {
         await CheckExpiredReservationsAsync();
@@ -35,6 +41,7 @@ public class ReservationService : IReservationService
             BookId = request.BookId,
             ReservationDate = DateTime.UtcNow,
             ExpirationDate = DateTime.UtcNow.AddDays(7) 
+            //ExpirationDate = DateTime.UtcNow.AddMinutes(5)
         };
 
         book.Status = BooksStatusE.Unavailable;
@@ -43,6 +50,12 @@ public class ReservationService : IReservationService
         return new ReservationResponse(newReservation);
     }
 
+    /// <summary>
+    /// metodo per controllare gli stati delle prenotazioni
+    /// Cosa fa: itera su tutta la lista delle prenotazioni e confronta a singola prenotazione la data di oggi con la data salvata sotto la colonna di fine prenotazione "ExpiredDate"
+    /// se la ExpiredDate è minore della data di oggi allora imposta lo stato del libro disponibile e procede ad eliminare la prenotazione.
+    /// </summary>
+    /// <returns></returns>
     public async Task CheckExpiredReservationsAsync()
     {
         var reservations = await _reservationRepository.GetAllReservation();
@@ -64,6 +77,11 @@ public class ReservationService : IReservationService
         }
     }
 
+    /// <summary>
+    /// Metodo per la cancellazione di una prenotazione
+    /// </summary>
+    /// <param name="request">L'id del libro da annullare</param>
+    /// <returns>boolean return: true se è avunta con successo, false se ci sono state delle eccezioni.</returns>
     public async Task<bool> DeleteReservation(DeleteReservationRequestDto request)
     {
         ReservationM? reservation = await _reservationRepository.GetReservationById(request.BookId);
@@ -79,9 +97,13 @@ public class ReservationService : IReservationService
         return true;
     }
 
+    /// <summary>
+    /// Metodo per ottenere tutte le prenotazioni di un singolo cliente
+    /// </summary>
+    /// <param name="request">Id del cliente</param>
+    /// <returns>Una lista di prenotazioni</returns>
     public async Task<List<ReservationResponse>> GetReservationByCustomerId(GetReservationByCustomerIdRequestDto request)
     {
-        //TODO: controllare perchè non accetta l'Id, il problema potrebbe essere anche a livello di controller. 
         var reservations = await _reservationRepository.GetReservationByCustomerId(request.CustomerId);
 
         if (reservations == null || !reservations.Any())
@@ -89,7 +111,11 @@ public class ReservationService : IReservationService
 
         return reservations.Select(r => new ReservationResponse(r)).ToList();
     }
-
+    /// <summary>
+    /// Ottenere una prenotazione
+    /// </summary>
+    /// <param name="request">L'id del libro</param>
+    /// <returns>la prenotazione</returns>
     public async Task<ReservationResponse> GetReservationById(GetReservationByIdRequestDto  request)
     {
         var reservation = await _reservationRepository.GetReservationById(request.Id);

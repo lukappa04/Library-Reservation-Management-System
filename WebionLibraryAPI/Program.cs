@@ -8,6 +8,7 @@ using WebionLibraryAPI.Data.Repository.Interfaces.BookRepoInterface;
 using WebionLibraryAPI.Data.Repository.Interfaces.CustomerRepoInterface;
 using WebionLibraryAPI.Data.Repository.Interfaces.ReservationRepoInterface;
 using WebionLibraryAPI.Service;
+using WebionLibraryAPI.Service.BackgroundCheck;
 using WebionLibraryAPI.Service.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,9 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddHostedService<ExpiredReservationHostedService>();
+
+builder.WebHost.UseUrls("http://*:8080");
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
