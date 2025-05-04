@@ -19,8 +19,6 @@ namespace WebionLibraryAPI.Controllers.CustomerController;
         public async Task<IActionResult> AddCustomer(AddCustomerRequestDto request)
         {
             var customer = await _customerService.AddCustomerAsync(request);
-            Console.WriteLine($"Registration Date: {customer.RegistrationDate}");
-
             return Ok(customer);
         }
     }

@@ -10,7 +10,8 @@ public class SwaggerTagDescriptions : IDocumentFilter
         swaggerDoc.Tags = new List<OpenApiTag>
         {
             new OpenApiTag { Name = "Books", Description = "Gestione dei libri"},
-            new OpenApiTag {Name = "Customer", Description = "Gestione dei clienti"}
+            new OpenApiTag {Name = "Customer", Description = "Gestione dei clienti"},
+            new OpenApiTag {Name= "Reservation", Description= "Gestione delle Prenotazioni"}
         };
     }
 }

@@ -53,10 +53,10 @@ public class CustomerService : ICustomerService
         return customer is not null ? new CustomerResponseDto(customer) : null;
     }
 
-    public async Task<CustomerResponseDto> UpdateCustomerAsync(int id, UpdateCustomerRequestDto request)
+    public async Task<CustomerResponseDto?> UpdateCustomerAsync(int id, UpdateCustomerRequestDto request)
     {
-        CustomerM updateCustomer = await _customerRepository.GetCustomerByIdAsync(id);
-        if(updateCustomer is null) throw new KeyNotFoundException("Cliente non trovato");
+        CustomerM? updateCustomer = await _customerRepository.GetCustomerByIdAsync(id);
+        if(updateCustomer is null) return null;
 
         var allCustomers = await _customerRepository.GetAllCustomerAsync();
         bool emailExists = allCustomers

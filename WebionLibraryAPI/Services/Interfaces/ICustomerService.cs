@@ -11,7 +11,7 @@ public interface ICustomerService
 {
     Task<IEnumerable<CustomerResponseDto>> GetAllCustomerAsync();
     Task<CustomerResponseDto> GetCustomerByIdAsync(GetCustomerByIdRequestDto request);
-    Task<CustomerResponseDto> UpdateCustomerAsync(int id, UpdateCustomerRequestDto request);
+    Task<CustomerResponseDto?> UpdateCustomerAsync(int id, UpdateCustomerRequestDto request);
     Task<bool> DeleteCustomerAsync(DeleteCustomerRequestDto request);
     Task<CustomerResponseDto> AddCustomerAsync(AddCustomerRequestDto request);
 }

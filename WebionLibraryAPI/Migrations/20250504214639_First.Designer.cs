@@ -12,8 +12,8 @@ using WebionLibraryAPI.Data.LibDbContext;
 namespace WebionLibraryAPI.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20250326230118_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250504214639_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,9 @@ namespace WebionLibraryAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ISBN")
+                        .IsUnique();
+
                     b.ToTable("Books");
                 });
 
@@ -74,9 +77,14 @@ namespace WebionLibraryAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Customers");
                 });
@@ -99,13 +107,16 @@ namespace WebionLibraryAPI.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("ReservationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
-
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("BookId", "ReservationDate")
+                        .IsUnique();
 
                     b.ToTable("Reservations");
                 });
@@ -115,7 +126,7 @@ namespace WebionLibraryAPI.Migrations
                     b.HasOne("WebionLibraryAPI.Models.Books.BookM", "Book")
                         .WithMany()
                         .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebionLibraryAPI.Models.Customers.CustomerM", "Customer")

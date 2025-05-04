@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WebionLibraryAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,7 +37,7 @@ namespace WebionLibraryAPI.Migrations
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    RegistrationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -52,7 +52,7 @@ namespace WebionLibraryAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CustomerId = table.Column<int>(type: "integer", nullable: false),
                     BookId = table.Column<int>(type: "integer", nullable: false),
-                    ReservationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ReservationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     ExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -63,7 +63,7 @@ namespace WebionLibraryAPI.Migrations
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservations_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -73,9 +73,22 @@ namespace WebionLibraryAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_BookId",
+                name: "IX_Books_ISBN",
+                table: "Books",
+                column: "ISBN",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_Email",
+                table: "Customers",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_BookId_ReservationDate",
                 table: "Reservations",
-                column: "BookId");
+                columns: new[] { "BookId", "ReservationDate" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_CustomerId",
