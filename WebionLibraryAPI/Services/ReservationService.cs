@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Npgsql.Internal;
 using WebionLibraryAPI.Data.Enum;
 using WebionLibraryAPI.Data.Repository.Interfaces.BookRepoInterface;
+using WebionLibraryAPI.Data.Repository.Interfaces.CustomerRepoInterface;
 using WebionLibraryAPI.Data.Repository.Interfaces.ReservationRepoInterface;
 using WebionLibraryAPI.DTO.ReservationDto;
 using WebionLibraryAPI.DTO.ReservationDto.CreateReservation;
@@ -16,10 +18,12 @@ public class ReservationService : IReservationService
 {
     private readonly IReservationRepository _reservationRepository;
     private readonly IBookRepository _bookRepository;
-    public ReservationService(IReservationRepository reservationRepository, IBookRepository bookRepository)
+    private readonly ICustomerRepository _customerRepository;
+    public ReservationService(IReservationRepository reservationRepository, IBookRepository bookRepository, ICustomerRepository customerRepository)
     {
         _reservationRepository = reservationRepository;
         _bookRepository = bookRepository;
+        _customerRepository = customerRepository;
     }
     /// <summary>
     /// Metodo per la creazione di una prenotazione
@@ -32,6 +36,8 @@ public class ReservationService : IReservationService
         await CheckExpiredReservationsAsync();
         var book = await _bookRepository.GetBookByIdAsync(request.BookId);
         if (book == null) throw new Exception("Libro non trovato.");
+        var customer = await _customerRepository.GetCustomerByIdAsync(request.CustomerId);
+        if(customer == null) throw new Exception("Cliente non disponibile");
 
         if (book.Status != BooksStatusE.Available) throw new Exception("Il libro non è disponibile per la prenotazione.");
 
