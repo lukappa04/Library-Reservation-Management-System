@@ -10,6 +10,7 @@ public sealed class CustomerResponseDto
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public DateTime RegistrationDate { get; set; }
+    public DateTime LastModifiedAt { get; set; }
     public CustomerResponseDto(CustomerM customer)
     {
         Id = customer.Id;
@@ -17,5 +18,6 @@ public sealed class CustomerResponseDto
         LastName = customer.LastName;
         Email = customer.Email;
         RegistrationDate = customer.RegistrationDate;
+        LastModifiedAt = customer.LastModifiedAt;
     }
 }

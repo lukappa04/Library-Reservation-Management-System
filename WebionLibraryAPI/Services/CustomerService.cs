@@ -24,7 +24,8 @@ public class CustomerService : ICustomerService
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
-            RegistrationDate = DateTime.UtcNow
+            RegistrationDate = DateTime.UtcNow,
+            LastModifiedAt = DateTime.UtcNow
         };
         if(await _customerRepository.isEmailExisting(request.Email)) throw new Exception("Email già esistente");
 
@@ -67,6 +68,7 @@ public class CustomerService : ICustomerService
         updateCustomer.FirstName = request.FirstName;
         updateCustomer.LastName = request.LastName;
         updateCustomer.Email = request.Email;
+        updateCustomer.LastModifiedAt = DateTime.UtcNow;
 
         
 

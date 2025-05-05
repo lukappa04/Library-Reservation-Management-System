@@ -14,8 +14,7 @@ public class CustomerM : IObjects
     public int Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-
-    //ho scelto di non inserire l'attributo per rendere l'email unique in questo punto ma di inserire il controllo dentro il dbContext.
     public string Email { get; set; } = string.Empty;
     public DateTime RegistrationDate { get; set; }
+    public DateTime LastModifiedAt {get; set;}
 }
