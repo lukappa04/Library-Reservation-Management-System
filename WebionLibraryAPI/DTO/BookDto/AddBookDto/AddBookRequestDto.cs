@@ -13,6 +13,4 @@ public sealed class AddBookRequestDto
     [Required]
     [ISBNStructChecker]
     public string ISBN { get; set; } = string.Empty;
-    [Required]
-    public BooksStatusE Status {get; set;} = BooksStatusE.Available;
 }

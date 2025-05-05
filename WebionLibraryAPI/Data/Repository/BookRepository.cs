@@ -56,10 +56,9 @@ public class BookRepository : IBookRepository
     public async Task<List<BookM?>> GetBookByTitleAsync(string Title)
     {
         //return await _context.Books.FirstOrDefaultAsync(b => b.Title == Title);
-        var books = await GetAllBooksAsync();
-        return books
-        .Where(b => b.Title.Equals(Title, StringComparison.OrdinalIgnoreCase))
-        .ToList();
+         return await _context.Books
+        .Where(b => b.Title.ToLower().Contains(Title.ToLower()))
+        .ToListAsync();
     }
 
     public async Task UpdateBookAsync(int id, BookM book)
@@ -84,9 +83,7 @@ public class BookRepository : IBookRepository
 
     public async Task<List<BookM?>> GetBookByAuthorAsync(string Author)
     {
-        var books = await GetAllBooksAsync();
-        return books
-        .Where(b => b.Author.Equals(Author, StringComparison.OrdinalIgnoreCase))
-        .ToList();
+        return await _context.Books
+        .Where(b => b.Author.ToLower().Contains(Author.ToLower())).ToListAsync();   
     }
 }

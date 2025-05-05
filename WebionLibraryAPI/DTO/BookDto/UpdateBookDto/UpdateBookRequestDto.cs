@@ -10,6 +10,4 @@ public sealed class UpdateBookRequestDto
     public string Title { get; set; } = string.Empty;
     [Required]
     public string Author { get; set; } = string.Empty;
-    [Required]
-    public BooksStatusE Status {get; set;} = BooksStatusE.Available;
 }

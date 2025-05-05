@@ -28,7 +28,6 @@ public class BookService : IBookService
             Title = request.Title,
             Author = request.Author,
             ISBN = request.ISBN,
-            Status = request.Status
         };
         if(await _bookRepository.IsIsbnExistsAsync(request.ISBN))
         {
@@ -88,12 +87,6 @@ public class BookService : IBookService
 
         if (!string.IsNullOrEmpty(request.Author)) 
             updateBook.Author = request.Author ?? updateBook.Author;
-
-        //if (!string.IsNullOrEmpty(request.ISBN)) 
-        //    updateBook.ISBN = request.ISBN ?? updateBook.ISBN;
-
-        if (request.Status != updateBook.Status) 
-            updateBook.Status = request.Status;
 
         await _bookRepository.UpdateBookAsync(id, updateBook);
         return new BookResponseDto(updateBook);
