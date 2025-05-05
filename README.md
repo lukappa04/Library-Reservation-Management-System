@@ -42,13 +42,6 @@ Lancia l'applicazione e il database PostgreSQL con Docker Compose:
 ```bash
 docker-compose up --build
 ```
-
-### 3. Inizializza il database
-Entra nel container per eseguire le migrazioni EF Core:
-```bash
-docker exec -it webion-api dotnet ef database update
-```
-
 ---
 
 ## 🌐 Accesso alle API
