@@ -34,6 +34,7 @@ Copia il file di esempio e personalizza:
 ```bash
 cp .env.example .env
 ```
+per farlo assicurati di essere nella corretta cartella
 
 ### 2. Avvio del progetto
 
@@ -41,6 +42,10 @@ Lancia l'applicazione e il database PostgreSQL con Docker Compose:
 
 ```bash
 docker-compose up --build
+```
+in caso avvengano apportate modifiche al progetto eseguire:
+```bash
+docker-compose down -v
 ```
 ---
 
