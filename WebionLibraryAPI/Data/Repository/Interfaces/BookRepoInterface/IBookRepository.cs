@@ -2,7 +2,10 @@ using WebionLibraryAPI.DTO.BookDto.DeleteBookDto;
 using WebionLibraryAPI.Models.Books;
 
 namespace WebionLibraryAPI.Data.Repository.Interfaces.BookRepoInterface;
-
+/// <summary>
+/// Interfaccia per la gestione del repository dei libri.
+/// Definisce le operazioni CRUD e di ricerca.
+/// </summary>
 public interface IBookRepository
 {
     Task<List<BookM>> GetAllBooksAsync();

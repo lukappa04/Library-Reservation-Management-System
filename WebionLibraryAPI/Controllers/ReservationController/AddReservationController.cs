@@ -4,7 +4,9 @@ using WebionLibraryAPI.DTO.ReservationDto.CreateReservation;
 using WebionLibraryAPI.Service.Interfaces;
 
 namespace WebionLibraryAPI.Controllers.ReservationController;
-
+    /// <summary>
+    /// Controller responsabile della creazione di una nuova prenotazione.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Tags("Reservation")]
@@ -15,6 +17,11 @@ namespace WebionLibraryAPI.Controllers.ReservationController;
         {
             _reservationService = reservationService;
         }
+        /// <summary>
+        /// Crea una nuova prenotazione.
+        /// </summary>
+        /// <param name="request">Dati della prenotazione da creare</param>
+        /// <returns>La prenotazione creata.</returns>
         [HttpPost]
         public async Task<IActionResult> AddReservation(CreateReservationRequestDto request)
         {

@@ -1,7 +1,10 @@
 using WebionLibraryAPI.Models.Customers;
 
 namespace WebionLibraryAPI.Data.Repository.Interfaces.CustomerRepoInterface;
-
+/// <summary>
+/// Interfaccia per la gestione del repository dei clienti.
+/// Definisce le operazioni CRUD e di ricerca.
+/// </summary>
 public interface ICustomerRepository
 {
     Task<List<CustomerM>>? GetAllCustomerAsync();

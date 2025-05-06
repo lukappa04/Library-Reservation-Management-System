@@ -4,7 +4,9 @@ using WebionLibraryAPI.DTO.CustomerDto.GetCustomerByIdDto;
 using WebionLibraryAPI.Service.Interfaces;
 
 namespace WebionLibraryAPI.Controllers.CustomerController;
-
+    /// <summary>
+    /// Controller responsabile del recupero di un cliente tramite ID.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Tags("Customer")]
@@ -15,6 +17,11 @@ namespace WebionLibraryAPI.Controllers.CustomerController;
         {
             _customerService = customerService;
         }
+        /// <summary>
+        /// Recupera un cliente in base all'ID specificato.
+        /// </summary>
+        /// <param name="id">ID del cliente da recuperare.</param>
+        /// <returns>Il cliente corrispondente oppure un errore se non trovato</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomerById(int id)
         {

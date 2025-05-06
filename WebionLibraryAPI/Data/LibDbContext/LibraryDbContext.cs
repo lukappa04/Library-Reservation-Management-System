@@ -25,8 +25,8 @@ public class LibraryDbContext : DbContext
         .IsUnique(); //impostiamo il campo email come unique
         
         modelBuilder.Entity<CustomerM>()
-        .Property(c => c.RegistrationDate)
-        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        .Property(c => c.RegistrationDate) //ogni data di registrazione
+        .HasDefaultValueSql("CURRENT_TIMESTAMP"); //al momento della prenotazione acquisisce data ed orario correnti.
 
         //BookM
         modelBuilder.Entity<BookM>()
@@ -41,8 +41,8 @@ public class LibraryDbContext : DbContext
         .OnDelete(DeleteBehavior.Cascade); //quando un cliente viene eliminato anche le sue prenotazioni si eliminano
 
         modelBuilder.Entity<ReservationM>()
-        .Property(r => r.ReservationDate)
-        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        .Property(r => r.ReservationDate) //ogni data di prenotazione
+        .HasDefaultValueSql("CURRENT_TIMESTAMP"); //al momento della prenotazione acquisisce data ed orario correnti.
 
 
         modelBuilder.Entity<ReservationM>()

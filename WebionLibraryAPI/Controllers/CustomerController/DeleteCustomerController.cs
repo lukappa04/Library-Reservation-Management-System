@@ -5,6 +5,9 @@ using WebionLibraryAPI.Service.Interfaces;
 
 namespace WebionLibraryAPI.Controllers.CustomerController;
 
+    /// <summary>
+    /// Controller responsabile dell'eliminazione di un cliente.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Tags("Customer")]
@@ -15,6 +18,11 @@ namespace WebionLibraryAPI.Controllers.CustomerController;
         {
             _customerService = customerService; 
         }
+        /// <summary>
+        /// Elimina un cliente tramite il suo ID.
+        /// </summary>
+        /// <param name="id">ID del cliente da eliminare.</param>
+        /// <returns>Risultato dell'operazione. In questo caso NoContent se va tutto bene. NotFound se risultano dei problemi</returns>
         [HttpDelete]
         public async Task<IActionResult> DeleteCustomer(int id)
         {

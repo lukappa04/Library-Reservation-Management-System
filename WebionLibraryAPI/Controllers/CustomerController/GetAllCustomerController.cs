@@ -4,6 +4,9 @@ using WebionLibraryAPI.Service.Interfaces;
 
 namespace WebionLibraryAPI.Controllers.CustomerController;
 
+    /// <summary>
+    /// Controller responsabile del recupero di tutti i clienti.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Tags("Customer")]
@@ -14,6 +17,10 @@ namespace WebionLibraryAPI.Controllers.CustomerController;
         {
             _customerService = customerService;
         }
+        /// <summary>
+        /// Recupera la lista di tutti i clienti registrati.
+        /// </summary>
+        /// <returns>Una lista di clienti.</returns>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
