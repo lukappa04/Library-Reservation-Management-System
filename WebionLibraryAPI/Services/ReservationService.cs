@@ -9,6 +9,7 @@ using WebionLibraryAPI.DTO.ReservationDto.CreateReservation;
 using WebionLibraryAPI.DTO.ReservationDto.DeleteReservation;
 using WebionLibraryAPI.DTO.ReservationDto.GetReservationByCustomerId;
 using WebionLibraryAPI.DTO.ReservationDto.GetReservationById;
+using WebionLibraryAPI.Exceptions;
 using WebionLibraryAPI.Models.Reservations;
 using WebionLibraryAPI.Service.Interfaces;
 
@@ -19,11 +20,13 @@ public class ReservationService : IReservationService
     private readonly IReservationRepository _reservationRepository;
     private readonly IBookRepository _bookRepository;
     private readonly ICustomerRepository _customerRepository;
-    public ReservationService(IReservationRepository reservationRepository, IBookRepository bookRepository, ICustomerRepository customerRepository)
+    private readonly ILogger<ReservationService> _logger;
+    public ReservationService(IReservationRepository reservationRepository, IBookRepository bookRepository, ICustomerRepository customerRepository, ILogger<ReservationService> logger)
     {
         _reservationRepository = reservationRepository;
         _bookRepository = bookRepository;
         _customerRepository = customerRepository;
+        _logger = logger;
     }
     /// <summary>
     /// Metodo per la creazione di una prenotazione
@@ -35,11 +38,19 @@ public class ReservationService : IReservationService
     {
         await CheckExpiredReservationsAsync();
         var book = await _bookRepository.GetBookByIdAsync(request.BookId);
-        if (book == null) throw new Exception("Libro non trovato.");
+        if (book == null)
+        {
+            _logger.LogWarning("Log: Libro non trovato");
+            throw new DataNotFoundExc(book.Id);
+        }
         var customer = await _customerRepository.GetCustomerByIdAsync(request.CustomerId);
-        if(customer == null) throw new Exception("Cliente non disponibile");
+        if(customer == null) throw new DataNotAvailableExc($"Cliente non disponibile");
 
-        if (book.Status != BooksStatusE.Available) throw new Exception("Il libro non è disponibile per la prenotazione.");
+        if (book.Status != BooksStatusE.Available)
+        {
+            _logger.LogError("Log: Libro non disponibile per la prenotazione");
+            throw new DataNotFoundExc(book.Id);
+        }
 
         ReservationM newReservation = new ReservationM
         {
@@ -47,7 +58,6 @@ public class ReservationService : IReservationService
             BookId = request.BookId,
             ReservationDate = DateTime.UtcNow,
             ExpirationDate = DateTime.UtcNow.AddDays(7) 
-            //ExpirationDate = DateTime.UtcNow.AddMinutes(5)
         };
 
         book.Status = BooksStatusE.Unavailable;
@@ -94,7 +104,11 @@ public class ReservationService : IReservationService
 
         var book = await _bookRepository.GetBookByIdAsync(reservation.BookId);
 
-        if(reservation == null) return false;
+        if(reservation == null)
+        {
+            _logger.LogWarning("Log: Data is null");
+            return false;
+        }
 
         book.Status = BooksStatusE.Available;
 

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebionLibraryAPI.DTO.CustomerDto.AddCustomerDto;
+using WebionLibraryAPI.Exceptions;
 using WebionLibraryAPI.Service.Interfaces;
 
 namespace WebionLibraryAPI.Controllers.CustomerController;
@@ -30,8 +31,13 @@ namespace WebionLibraryAPI.Controllers.CustomerController;
         [HttpPost]
         public async Task<IActionResult> AddCustomer(AddCustomerRequestDto request)
         {
+            try{
             var customer = await _customerService.AddCustomerAsync(request);
-            return Ok(customer);
+            return customer is not null ? Ok(customer) : NotFound();
+            }catch(DataAlreadyExistExc)
+            {
+                return BadRequest("Email già esistente");
+            }
         }
     }
 

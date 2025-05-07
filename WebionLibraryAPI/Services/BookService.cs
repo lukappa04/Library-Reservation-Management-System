@@ -6,6 +6,7 @@ using WebionLibraryAPI.DTO.BookDto.GetBookByAuthor;
 using WebionLibraryAPI.DTO.BookDto.GetBookByIdDto;
 using WebionLibraryAPI.DTO.BookDto.GetBookByTitleDto;
 using WebionLibraryAPI.DTO.BookDto.UpdateBookDto;
+using WebionLibraryAPI.Exceptions;
 using WebionLibraryAPI.Models.Books;
 using WebionLibraryAPI.Service.Interfaces;
 
@@ -14,9 +15,11 @@ namespace WebionLibraryAPI.Service;
 public class BookService : IBookService
 {
     private readonly IBookRepository _bookRepository;
-    public BookService(IBookRepository BookRepository)
+    private readonly ILogger<BookService> _logger;
+    public BookService(IBookRepository BookRepository, ILogger<BookService> logger)
     {
         _bookRepository = BookRepository;
+        _logger = logger;
     }
 
     public async Task<BookResponseDto> AddBookAsync(AddBookRequestDto request)
@@ -31,7 +34,8 @@ public class BookService : IBookService
         };
         if(await _bookRepository.IsIsbnExistsAsync(request.ISBN))
         {
-            throw new Exception("ISBN già esistente");
+            _logger.LogError("Log: ISBN già esistente");
+            throw new DataAlreadyExistExc(request.ISBN);
         }
 
         await _bookRepository.AddBookAsync(newBook);
@@ -80,8 +84,11 @@ public class BookService : IBookService
     public async Task<BookResponseDto> UpdateBookAsync(int id, UpdateBookRequestDto request)
     {
         BookM updateBook = await _bookRepository.GetBookByIdAsync(id);
-        if(updateBook is null) throw new KeyNotFoundException("Libro non trovato");
-        
+        if(updateBook is null) 
+        {
+            _logger.LogWarning("Log: Libro non trovato");
+            throw new DataNotFoundExc(updateBook.Id);
+        }
         if (!string.IsNullOrEmpty(request.Title)) 
         updateBook.Title = request.Title ?? updateBook.Title;
 

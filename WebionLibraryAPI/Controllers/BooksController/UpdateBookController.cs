@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebionLibraryAPI.Data.Repository.Interfaces.BookRepoInterface;
 using WebionLibraryAPI.DTO.BookDto.UpdateBookDto;
+using WebionLibraryAPI.Exceptions;
 using WebionLibraryAPI.Models.Books;
 using WebionLibraryAPI.Service;
 using WebionLibraryAPI.Service.Interfaces;
@@ -34,9 +35,10 @@ namespace WebionLibraryAPI.Controllers.BooksController;
             try{
             var book = await _bookService.UpdateBookAsync(id, request);
             return book is not null ? Ok(book) : NotFound();
-            }catch(KeyNotFoundException)
+            }
+            catch(DataNotFoundExc)
             {
-                return BadRequest("Id not found");
+                return NotFound("Libro non trovato");
             }
         }
     }

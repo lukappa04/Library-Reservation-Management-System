@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using WebionLibraryAPI.DTO.CustomerDto.UpdateCustomerDto;
+using WebionLibraryAPI.Exceptions;
 using WebionLibraryAPI.Service.Interfaces;
 
 namespace WebionLibraryAPI.Controllers.CustomerController;
@@ -28,8 +29,13 @@ namespace WebionLibraryAPI.Controllers.CustomerController;
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCustomer(int id, UpdateCustomerRequestDto request)
         {
-            var customer = await _customerService.UpdateCustomerAsync(id, request);
-            return customer is not null ? Ok(customer) : NotFound();
+            try{
+                var customer = await _customerService.UpdateCustomerAsync(id, request);
+                return customer is not null ? Ok(customer) : NotFound();
+            }catch(DataAlreadyExistExc)
+            {
+                return BadRequest("Questa email è già associata ad un altro cliente");
+            }
         }
     }
 

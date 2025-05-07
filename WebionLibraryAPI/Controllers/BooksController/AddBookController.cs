@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebionLibraryAPI.DTO.BookDto.AddBookDto;
+using WebionLibraryAPI.Exceptions;
 using WebionLibraryAPI.Service.Interfaces;
 
 namespace WebionLibraryAPI.Controllers.BooksController;
@@ -29,8 +31,13 @@ namespace WebionLibraryAPI.Controllers.BooksController;
         [HttpPost]
         public async Task<IActionResult> AddBook(AddBookRequestDto request)
         {
+            try{
             var book = await _bookService.AddBookAsync(request);
-            return Ok(book);
+            return book is not null ? Ok(book) : NotFound();
+            }catch(DataAlreadyExistExc)
+            {
+                return BadRequest("ISBN già esistente");
+            }
         }
     }
 

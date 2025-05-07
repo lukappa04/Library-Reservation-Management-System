@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebionLibraryAPI.DTO.ReservationDto.CreateReservation;
+using WebionLibraryAPI.Exceptions;
+using WebionLibraryAPI.Service;
 using WebionLibraryAPI.Service.Interfaces;
 
 namespace WebionLibraryAPI.Controllers.ReservationController;
@@ -13,9 +15,11 @@ namespace WebionLibraryAPI.Controllers.ReservationController;
     public class AddReservationController : ControllerBase
     {
         private readonly IReservationService _reservationService;
-        public AddReservationController(IReservationService reservationService)
+        private readonly ILogger<ReservationService> _logger;
+        public AddReservationController(IReservationService reservationService,  ILogger<ReservationService> logger)
         {
             _reservationService = reservationService;
+            _logger = logger;
         }
         /// <summary>
         /// Crea una nuova prenotazione.
@@ -25,10 +29,18 @@ namespace WebionLibraryAPI.Controllers.ReservationController;
         [HttpPost]
         public async Task<IActionResult> AddReservation(CreateReservationRequestDto request)
         {
+            try	{
             var reservation = await _reservationService.AddReservation(request);
-            Console.WriteLine($"Reservation Date: {reservation.ReservationDate}");
+            _logger.LogInformation($"Reservation Date: {reservation.ReservationDate}");
 
-            return Ok(reservation);
+            return reservation is not null ? Ok(reservation) : NotFound("Libro non trovato");
+            }catch(DataNotFoundExc){
+                return BadRequest("Libro non disponibile per la prenotazione");
+            }
+            catch(DataNotAvailableExc)
+            {
+                return BadRequest($"Cliente non disponibile");
+            }
         }
     }
 
