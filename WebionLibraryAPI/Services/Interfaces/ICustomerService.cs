@@ -6,7 +6,10 @@ using WebionLibraryAPI.DTO.CustomerDto.UpdateCustomerDto;
 using WebionLibraryAPI.Models.Customers;
 
 namespace WebionLibraryAPI.Service.Interfaces;
-
+/// <summary>
+/// Interfaccia per la gestione del repository dei clienti.
+/// Definisce le operazioni CRUD e di ricerca.
+/// </summary>
 public interface ICustomerService
 {
     Task<IEnumerable<CustomerResponseDto>> GetAllCustomerAsync();

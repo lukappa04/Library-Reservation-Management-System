@@ -5,7 +5,10 @@ using WebionLibraryAPI.DTO.ReservationDto.GetReservationByCustomerId;
 using WebionLibraryAPI.DTO.ReservationDto.GetReservationById;
 
 namespace WebionLibraryAPI.Service.Interfaces;
-
+/// <summary>
+/// Interfaccia per la gestione del repository delle prenotazioni.
+/// Definisce le operazioni CRUD e di ricerca.
+/// </summary>
 public interface IReservationService
 {
     Task<List<ReservationResponse>> GetReservationByCustomerId (GetReservationByCustomerIdRequestDto request);

@@ -7,7 +7,10 @@ using WebionLibraryAPI.DTO.BookDto.GetBookByTitleDto;
 using WebionLibraryAPI.DTO.BookDto.UpdateBookDto;
 
 namespace WebionLibraryAPI.Service.Interfaces;
-
+/// <summary>
+/// Interfaccia per la gestione del service dei lirbi.
+/// Definisce le operazioni CRUD e di ricerca. 
+/// </summary>
 public interface IBookService
 {
     Task<IEnumerable<BookResponseDto>> GetAllBookAsync();
