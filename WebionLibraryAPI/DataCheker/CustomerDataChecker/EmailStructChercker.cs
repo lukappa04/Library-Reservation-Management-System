@@ -24,7 +24,7 @@ public class EmailStructChecker : ValidationAttribute
         {
             if(!Regex.IsMatch(email, EmailPattern))
             {
-                throw new Exception("Email structure is wrong");
+                return new ValidationResult("Email structure is wrong");
             }
         }
         return ValidationResult.Success;

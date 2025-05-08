@@ -31,6 +31,10 @@ namespace WebionLibraryAPI.Controllers.CustomerController;
         [HttpPost]
         public async Task<IActionResult> AddCustomer(AddCustomerRequestDto request)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             try{
             var customer = await _customerService.AddCustomerAsync(request);
             return customer is not null ? Ok(customer) : NotFound();

@@ -33,7 +33,7 @@ public class CustomerService : ICustomerService
         if(await _customerRepository.isEmailExisting(request.Email))
         { 
             _logger.LogError("Log: Email già esistente");  
-            throw new DataAlreadyExistExc(request.Email);
+            throw new DataAlreadyExistExc();
         }
 
         await _customerRepository.AddCustomerAsync(newCustomer);
@@ -80,7 +80,7 @@ public class CustomerService : ICustomerService
         if (emailExists)
         {
             _logger.LogError("Log: Questa email è già associata ad un altro cliente");
-            throw new DataAlreadyExistExc(request.Email);
+            throw new DataAlreadyExistExc();
         }
 
         updateCustomer.FirstName = request.FirstName;

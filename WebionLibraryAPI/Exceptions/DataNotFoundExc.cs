@@ -2,7 +2,7 @@ namespace WebionLibraryAPI.Exceptions;
 
 public class DataNotFoundExc : Exception
 {
-    public DataNotFoundExc(int data) : base ($"Il dato {data} non è stato trovato")
+    public DataNotFoundExc() : base ($"Il dato non è stato trovato")
     {
 
     }

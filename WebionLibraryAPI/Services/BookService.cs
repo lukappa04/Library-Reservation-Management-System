@@ -35,7 +35,7 @@ public class BookService : IBookService
         if(await _bookRepository.IsIsbnExistsAsync(request.ISBN))
         {
             _logger.LogError("Log: ISBN già esistente");
-            throw new DataAlreadyExistExc(request.ISBN);
+            throw new DataAlreadyExistExc();
         }
 
         await _bookRepository.AddBookAsync(newBook);
@@ -45,8 +45,9 @@ public class BookService : IBookService
     public async Task<bool> DeleteBookAsync(DeleteBookRequestDto request)
     {
         BookM? book = await _bookRepository.GetBookByIdAsync(request.Id);
-        if (book == null) return false; // Se il libro non esiste, ritorna false
-
+        if (book == null) { 
+            throw new DataNotFoundExc(); // Se il libro non esiste
+        }
         await _bookRepository.DeleteBookAsync(book);
         return true;
     }
@@ -87,7 +88,7 @@ public class BookService : IBookService
         if(updateBook is null) 
         {
             _logger.LogWarning("Log: Libro non trovato");
-            throw new DataNotFoundExc(updateBook.Id);
+            throw new DataNotFoundExc();
         }
         if (!string.IsNullOrEmpty(request.Title)) 
         updateBook.Title = request.Title ?? updateBook.Title;

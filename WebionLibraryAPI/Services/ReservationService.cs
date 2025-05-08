@@ -41,15 +41,15 @@ public class ReservationService : IReservationService
         if (book == null)
         {
             _logger.LogWarning("Log: Libro non trovato");
-            throw new DataNotFoundExc(book.Id);
+            throw new DataNotFoundExc();
         }
         var customer = await _customerRepository.GetCustomerByIdAsync(request.CustomerId);
-        if(customer == null) throw new DataNotAvailableExc($"Cliente non disponibile");
+        if(customer == null) throw new DataNotAvailableExc();
 
         if (book.Status != BooksStatusE.Available)
         {
             _logger.LogError("Log: Libro non disponibile per la prenotazione");
-            throw new DataNotFoundExc(book.Id);
+            throw new DataNotFoundExc();
         }
 
         ReservationM newReservation = new ReservationM
@@ -102,13 +102,13 @@ public class ReservationService : IReservationService
     {
         ReservationM? reservation = await _reservationRepository.GetReservationById(request.BookId);
 
-        var book = await _bookRepository.GetBookByIdAsync(reservation.BookId);
-
         if(reservation == null)
         {
-            _logger.LogWarning("Log: Data is null");
+            _logger.LogWarning("Log: Prenotazione non trovata");
             return false;
         }
+
+        var book = await _bookRepository.GetBookByIdAsync(reservation.BookId);
 
         book.Status = BooksStatusE.Available;
 

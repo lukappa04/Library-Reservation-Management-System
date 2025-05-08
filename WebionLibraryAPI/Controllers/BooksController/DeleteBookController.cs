@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebionLibraryAPI.DTO.BookDto.DeleteBookDto;
+using WebionLibraryAPI.Exceptions;
 using WebionLibraryAPI.Models.Books;
 using WebionLibraryAPI.Service.Interfaces;
 
@@ -26,12 +28,17 @@ namespace WebionLibraryAPI.Controllers.BooksController;
         /// </summary>
         /// <param name="id">campo per identificare il libro da eliminare</param>
         /// <returns> NoContent --> se tutto va bene / NotFound --> se il libro non viene trovato </returns>
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
-            var request = new DeleteBookRequestDto { Id = id };
-            var result = await _bookService.DeleteBookAsync(request);
-            return result ? NoContent() : NotFound();
+            try{
+                var request = new DeleteBookRequestDto { Id = id };
+                var result = await _bookService.DeleteBookAsync(request);
+                return result ? NoContent() : NotFound();
+            }catch(DataNotFoundExc ex)
+            {
+                return NotFound(new{message = ex.Message});
+            }
         }
     }
 
