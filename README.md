@@ -26,10 +26,14 @@ API REST per la gestione di una biblioteca, sviluppata con ASP.NET Core 8.0 e Po
 ---
 
 ## 🚀 Avvio rapido
+Importante entrare nella cartella di lavoro:  
+```bash
+cd WebionLibraryAPI
+```   
 
 ### 1. Crea il file `.env`
 
-Copia il file di esempio e personalizza:
+Copia il file di esempio:
 
 ```bash
 cp .env.example .env
@@ -43,7 +47,7 @@ Lancia l'applicazione e il database PostgreSQL con Docker Compose:
 ```bash
 docker-compose up --build
 ```
-in caso avvengano apportate modifiche al progetto eseguire:  
+in caso vengano apportate modifiche al progetto eseguire:  
 ⚠️⚠️ATTENZIONE⚠️⚠️  
 Facendo ciò si perderanno tutti i dati presenti a db
 ```bash
